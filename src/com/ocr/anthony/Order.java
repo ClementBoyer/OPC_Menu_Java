@@ -1,5 +1,6 @@
 package com.ocr.anthony;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Order {
@@ -9,7 +10,8 @@ public class Order {
     /**
      * Display all available menus in the restaurant.
      */
-    public void displayAvailableMenu() {
+    public void displayAvailableMenu()
+    {
         System.out.println("Choix menu");
         System.out.println("1 - poulet");
         System.out.println("2 - boeuf");
@@ -23,8 +25,10 @@ public class Order {
      *
      * @param nbMenu The selected menu.
      */
-    public void displaySelectedMenu(int nbMenu) {
-        switch (nbMenu) {
+    public void displaySelectedMenu(int nbMenu)
+    {
+        switch (nbMenu)
+        {
             case 1:
                 System.out.println("Vous avez choisi comme menu : poulet");
                 break;
@@ -68,7 +72,22 @@ public class Order {
     public void runMenus()
     {
         System.out.println("Combien souhaitez vous commander de menu ?");
-        int menuQuantity = sc.nextInt();
+        int menuQuantity = -1;
+        boolean responseIsGood;
+        do
+        {
+            try
+            {
+                menuQuantity = sc.nextInt();
+                responseIsGood = true;
+            }
+            catch (InputMismatchException e)
+            {
+                sc.next();
+                System.out.println("Vous devez saisir un nombre, correspondant au nombre de menus souhaités");
+                responseIsGood = false;
+            }
+        } while (!responseIsGood);
         orderSummary = "Résumé de votre commande :%n";
         for (int i = 0; i < menuQuantity; i++)
         {
@@ -130,8 +149,10 @@ public class Order {
      *
      * @param nbDrink The selected drink.
      */
-    public void displaySelectedDrink(int nbDrink) {
-        switch (nbDrink) {
+    public void displaySelectedDrink(int nbDrink)
+    {
+        switch (nbDrink)
+        {
             case 1:
                 System.out.println("Vous avez choisi comme boisson : eau plate");
                 break;
@@ -196,12 +217,19 @@ public class Order {
         for (int i = 1; i <= responses.length; i++)
             System.out.println(i + " - " + responses[i - 1]);
         System.out.println("Que souhaitez-vous comme " + category + "?");
-        int nbResponse;
+        int nbResponse = 0;
         boolean responseIsGood;
         do
         {
-            nbResponse = sc.nextInt();
-            responseIsGood = (nbResponse >= 1 && nbResponse <= responses.length);
+            try
+            {
+                nbResponse = sc.nextInt();
+                responseIsGood = (nbResponse >= 1 && nbResponse <= responses.length);
+            }
+            catch (InputMismatchException e) {
+                sc.next();
+                responseIsGood = false;
+            }
             if (responseIsGood)
             {
                 String choice = "Vous avez choisi comme " + category + " : " + responses[nbResponse - 1];
